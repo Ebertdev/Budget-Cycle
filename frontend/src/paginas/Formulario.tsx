@@ -256,7 +256,18 @@ export default function Formulario({ id }: { id?: number }) {
     const comPendente = pendente && !selecionados.includes(pendente)
       ? { ...form, servicos: [...form.servicos, { descricao: pendente, valor: "" }] }
       : form;
-    const limpo = limparForm({ ...comPendente, pecas: trocouPeca ? comPendente.pecas : [] });
+    // Com a opção ligada, linhas de peça em branco não são descartadas: viram erro no campo,
+    // em vez de salvar o orçamento sem a peça que a pessoa achou que tinha adicionado.
+    const limpo = {
+      ...limparForm({ ...comPendente, pecas: [] }),
+      pecas: trocouPeca
+        ? comPendente.pecas.map((p) => ({
+            nomePeca: p.nomePeca.trim(),
+            quantidade: p.quantidade,
+            valorUnitario: p.valorUnitario.trim(),
+          }))
+        : [],
+    };
     setForm((f) => ({ ...f, servicos: limpo.servicos }));
     setNovoServico("");
     const encontrados = validarOrcamento(limpo);
@@ -496,8 +507,16 @@ export default function Formulario({ id }: { id?: number }) {
                     checked={trocouPeca}
                     onChange={(e) => {
                       setTrocouPeca(e.target.checked);
-                      if (e.target.checked && form.pecas.length === 0) {
-                        atualizar("pecas", [{ nomePeca: "", quantidade: "1", valorUnitario: "" }]);
+                      if (e.target.checked) {
+                        if (form.pecas.length === 0) {
+                          atualizar("pecas", [{ nomePeca: "", quantidade: "1", valorUnitario: "" }]);
+                        }
+                        // Leva a pessoa até o campo novo, que aparece abaixo do interruptor.
+                        requestAnimationFrame(() => {
+                          const campo = refForm.current?.querySelector<HTMLInputElement>(".linha-peca input");
+                          campo?.focus?.();
+                          campo?.scrollIntoView?.({ block: "center", behavior: "smooth" });
+                        });
                       }
                     }}
                   />
