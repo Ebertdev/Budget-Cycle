@@ -2,7 +2,7 @@
 
 PWA para registrar orçamentos de uma oficina de bicicleta, do balcão até a entrega. Feito para a **Bicicloed**, funciona instalado no celular e no computador.
 
-[![CI](https://github.com/SEU-USUARIO/budgetcycle/actions/workflows/ci.yml/badge.svg)](https://github.com/SEU-USUARIO/budgetcycle/actions/workflows/ci.yml)
+[![CI](https://github.com/Ebertdev/Budget-Cycle/actions/workflows/ci.yml/badge.svg)](https://github.com/Ebertdev/Budget-Cycle/actions/workflows/ci.yml)
 ![Java 21](https://img.shields.io/badge/Java-21-orange)
 ![Spring Boot 3.4](https://img.shields.io/badge/Spring%20Boot-3.4-6db33f)
 ![React 19](https://img.shields.io/badge/React-19-61dafb)
